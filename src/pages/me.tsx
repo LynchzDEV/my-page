@@ -146,7 +146,7 @@ const MePage = () => {
               backgroundImage: `url(${BG})`,
               transform: bgTransform,
               filter: "blur(8px)",
-              opacity: 0.88,
+              // opacity: 0.88,
               transition: "transform 0.1s ease-out",
             }}
           />
