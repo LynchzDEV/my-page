@@ -1,5 +1,5 @@
 import Me from "@/assets/me.png";
-import BG from "@/assets/bg.gif";
+import BG from "@/assets/bg.mp4"; // Correctly importing the video file
 import { useEffect, useState, useRef } from "react";
 
 const lerp = (start: number, end: number, t: number) => {
@@ -9,7 +9,7 @@ const lerp = (start: number, end: number, t: number) => {
 const MePage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
-  const [bgLoaded, setBgLoaded] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false); // This state now tracks if the video is ready
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const [scrollX, setScrollX] = useState(0);
@@ -21,14 +21,13 @@ const MePage = () => {
   const scrollXRef = useRef(scrollX);
   scrollXRef.current = scrollX;
 
-  // You can adjust this value to control the animation duration
   const MAX_SCROLL_X = 500;
 
   useEffect(() => {
     // Initial load animations
     setTimeout(() => {
       setImageLoaded(true);
-      setBgLoaded(true);
+      // We removed setBgLoaded from here, it's now handled by the video's onLoadedData event
     }, 100);
     const textTimer = setTimeout(() => {
       setTextVisible(true);
@@ -43,25 +42,19 @@ const MePage = () => {
       }
     };
 
-    // MODIFIED: This function now allows for vertical scroll after the animation
     const handleWheel = (e: WheelEvent) => {
       const scrollAmount = e.deltaY;
       const currentScrollX = scrollXRef.current;
 
-      // Check if we are within the horizontal animation's scroll boundaries
       if (
         (scrollAmount > 0 && currentScrollX < MAX_SCROLL_X) ||
         (scrollAmount < 0 && currentScrollX > 0)
       ) {
-        // If so, prevent the default vertical scroll and update our custom scroll value
         e.preventDefault();
         setScrollX((prev) =>
           Math.max(0, Math.min(prev + scrollAmount, MAX_SCROLL_X)),
         );
       }
-      // If we are at the beginning or end of the animation, we do nothing.
-      // This allows the browser's default scroll behavior to take over,
-      // enabling the user to scroll to the next section.
     };
 
     const currentContainer = containerRef.current;
@@ -97,18 +90,15 @@ const MePage = () => {
 
   const scrollProgress = smoothScrollX / MAX_SCROLL_X;
 
-  // Background parallax transform
   const bgTransform = `scale(1.1) translate(${mousePosition.x * 20}px, ${
     mousePosition.y * 20
   }px)`;
 
-  // Image transform (moves with scroll and parallax)
   const imageTransform = `translateX(${smoothScrollX}px) translate(${-mousePosition.x * 20}px, ${Math.min(
     0,
     -mousePosition.y * 20,
   )}px)`;
 
-  // "LYNCHZ" text transform
   const textScale = 1 - scrollProgress * 0.6;
   const textTranslateX = scrollProgress * -250;
   const textTranslateY = scrollProgress * -150;
@@ -119,11 +109,9 @@ const MePage = () => {
     scale(${textScale})
   `;
 
-  // NEW: Description text transform and opacity
-  // It starts fading in after 40% of the scroll is complete and moves up into place.
   const descriptionOpacity = Math.max(0, (scrollProgress - 0.4) * 2);
-  const descriptionTranslateX = scrollProgress * -245; // Moves left as you scroll
-  const descriptionTranslateY = (2 - scrollProgress) * 30; // Starts lower and moves up
+  const descriptionTranslateX = scrollProgress * -245;
+  const descriptionTranslateY = (2 - scrollProgress) * 30;
   const descriptionTransform = `
     translateX(calc(-50% + ${descriptionTranslateX}px))
     translateY(calc(-50% + ${descriptionTranslateY}px))
@@ -131,25 +119,31 @@ const MePage = () => {
 
   return (
     <>
-      {/* This container creates the "track" for the scroll animation */}
       <div style={{ height: `calc(100vh + ${MAX_SCROLL_X}px)` }}>
-        {/* The sticky container holds all animated elements */}
         <div
           ref={containerRef}
           className="flex h-screen w-full justify-center items-end overflow-hidden sticky top-0"
         >
-          <div
-            className={`absolute inset-0 w-full h-screen bg-cover bg-center transition-opacity duration-700 ${
+          {/* ---- CHANGE START ---- */}
+          {/* We replace the div with a video element */}
+          <video
+            src={BG} // Use the imported video file as the source
+            autoPlay // The video will start playing on its own
+            loop // The video will restart when it finishes
+            muted // Mute the video, which is required for autoplay in most browsers
+            playsInline // Important for playback on iOS devices
+            onLoadedData={() => setBgLoaded(true)} // Set bgLoaded to true when the video data is ready
+            className={`absolute inset-0 w-full h-screen object-cover transition-opacity duration-700 ${
               bgLoaded ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              backgroundImage: `url(${BG})`,
               transform: bgTransform,
               filter: "blur(8px)",
-              // opacity: 0.88,
               transition: "transform 0.1s ease-out",
             }}
           />
+          {/* ---- CHANGE END ---- */}
+
           <p
             className={`absolute left-1/2 top-1/2 text-center font-black text-white text-[10vh] md:text-[15vh] lg:text-[30vh] z-10`}
             style={{
@@ -162,7 +156,6 @@ const MePage = () => {
             LYNCHZ
           </p>
 
-          {/* NEW: Description Text Element */}
           <div
             className="absolute left-1/2 top-1/2 w-4/5 md:w-1/2 z-10"
             style={{
