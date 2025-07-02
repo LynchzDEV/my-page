@@ -1,0 +1,69 @@
+import {
+  DraggableCardBody,
+  DraggableCardContainer,
+} from "@/components/ui/draggable-card";
+
+import IMG01 from "@/assets/IMG00001.JPG";
+import IMG02 from "@/assets/IMG00010.JPG";
+import IMG03 from "@/assets/IMG00009.JPG";
+import IMG04 from "@/assets/IMG00007.JPG";
+import IMG05 from "@/assets/IMG00008.JPG";
+import IMG06 from "@/assets/IMG00005.JPG";
+
+export default function DraggableCardDemo() {
+  const items = [
+    {
+      title: "",
+      image: IMG01,
+      className: "absolute top-10 left-[20%] rotate-[-5deg]",
+    },
+    {
+      title: "",
+      image: IMG02,
+      className: "absolute top-40 left-[25%] rotate-[-7deg]",
+    },
+    {
+      title: "",
+      image: IMG03,
+      className: "absolute top-5 left-[40%] rotate-[8deg]",
+    },
+    {
+      title: "",
+      image: IMG04,
+      className: "absolute top-32 left-[55%] rotate-[10deg]",
+    },
+    {
+      title: "",
+      image: IMG05,
+      className: "absolute top-20 right-[35%] rotate-[2deg]",
+    },
+    {
+      title: "",
+      image: IMG06,
+      className: "absolute top-24 left-[45%] rotate-[-7deg]",
+    },
+  ];
+  return (
+    <DraggableCardContainer className="relative flex min-h-screen w-full items-center justify-center overflow-clip">
+      <p className="absolute top-1/2 mx-auto max-w-2xl -translate-y-3/4 text-center text-2xl font-black text-neutral-400 md:text-4xl">
+        Live with passion, <br />
+        Learn with purpose, <br />
+        Act without hesitation. <br />
+        <br />
+        Share it all as if there's no tomorrow. :D
+      </p>
+      {items.map((item) => (
+        <DraggableCardBody className={item.className} key={item.image}>
+          <img
+            src={item.image}
+            alt={item.title}
+            className="pointer-events-none relative z-10 h-80 w-80 object-cover"
+          />
+          <h3 className="mt-4 text-center text-2xl font-bold text-neutral-700">
+            {item.title}
+          </h3>
+        </DraggableCardBody>
+      ))}
+    </DraggableCardContainer>
+  );
+}

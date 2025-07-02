@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+/* Force light theme by disabling dark mode styles */
+html {
+    color-scheme: light;
+}
+
+/* Override any dark mode styles that might be applied */
+html.dark,
+html[data-theme="dark"],
+.dark {
+    color-scheme: light !important;
+}
+
+/* Ensure dark mode classes don't apply their styles */
+html.dark *,
+html[data-theme="dark"] *,
+.dark * {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+/* Force light backgrounds and text colors */
+body {
+    background-color: white;
+    color: black;
+}
