@@ -53,7 +53,10 @@ export default function DraggableCardDemo() {
         Share it all as if there's no tomorrow. :D
       </p>
       {items.map((item) => (
-        <DraggableCardBody className={item.className} key={item.image}>
+        <DraggableCardBody
+          className={`${item.className} z-50`}
+          key={item.image}
+        >
           <img
             src={item.image}
             alt={item.title}
