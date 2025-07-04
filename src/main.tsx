@@ -5,13 +5,13 @@ import "./index.css";
 import DraggableCards from "@/pages/cards";
 import MePage from "@/pages/me";
 
-import Blogs from "@/components/blogs";
+// import Blogs from "@/components/blogs";
 
-const debugBorder = true;
+const debugBorder = false;
 
 const borderRed = debugBorder ? "border border-red-500" : "";
 const borderGreen = debugBorder ? "border border-green-400" : "";
-const borderBlue = debugBorder ? "border border-blue-500" : "";
+// const borderBlue = debugBorder ? "border border-blue-500" : "";
 const borderRedOuter = debugBorder ? "border-red-500 border" : "";
 
 createRoot(document.getElementById("root")!).render(
@@ -28,9 +28,9 @@ createRoot(document.getElementById("root")!).render(
       className={`h-screen w-screen flex flex-col lg:flex-row ${borderRedOuter}`}
     >
       <div
-        className={`p-6 flex w-screen items-center  justify-around text-center ${borderGreen}`}
+        className={`flex w-screen items-center  justify-around text-center ${borderGreen}`}
       >
-        <Blogs />
+        {/* <Blogs /> */}
         <DraggableCards />
       </div>
     </div>

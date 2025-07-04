@@ -51,7 +51,7 @@ const blogData = [
 
 const Blogs = () => {
   return (
-    <div className="flex flex-col p-8 bg-slate-50 w-1/3 rounded-lg shadow-xl">
+    <div className="flex flex-col p-8 bg-slate-50 w-10vw rounded-lg shadow-xl">
       <h1 className="text-2xl font-bold mb-4 text-center">Blogs</h1>
       <div className="flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
         {blogData.map((blog, idx) => (
