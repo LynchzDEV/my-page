@@ -1,5 +1,5 @@
 import Me from "@/assets/me.png";
-import BG from "@/assets/bg.mp4"; // Correctly importing the video file
+import BG from "@/assets/bg.mp4";
 import { useEffect, useState, useRef } from "react";
 
 const lerp = (start: number, end: number, t: number) => {
@@ -9,7 +9,7 @@ const lerp = (start: number, end: number, t: number) => {
 const MePage = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
-  const [bgLoaded, setBgLoaded] = useState(false); // This state now tracks if the video is ready
+  const [bgLoaded, setBgLoaded] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const [scrollX, setScrollX] = useState(0);
@@ -21,13 +21,11 @@ const MePage = () => {
   const scrollXRef = useRef(scrollX);
   scrollXRef.current = scrollX;
 
-  const MAX_SCROLL_X = 500;
+  const MAX_SCROLL_X = 350;
 
   useEffect(() => {
-    // Initial load animations
     setTimeout(() => {
       setImageLoaded(true);
-      // We removed setBgLoaded from here, it's now handled by the video's onLoadedData event
     }, 100);
     const textTimer = setTimeout(() => {
       setTextVisible(true);
@@ -70,7 +68,6 @@ const MePage = () => {
     };
   }, []);
 
-  // Animation loop for smooth scrolling
   useEffect(() => {
     let animationFrame: number;
     const animate = () => {
@@ -85,8 +82,6 @@ const MePage = () => {
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
   }, [scrollX, smoothScrollX]);
-
-  // ---- Animation Calculations ----
 
   const scrollProgress = smoothScrollX / MAX_SCROLL_X;
 
@@ -110,7 +105,7 @@ const MePage = () => {
   `;
 
   const descriptionOpacity = Math.max(0, (scrollProgress - 0.4) * 2);
-  const descriptionTranslateX = scrollProgress * -245;
+  const descriptionTranslateX = scrollProgress * -255;
   const descriptionTranslateY = (2 - scrollProgress) * 30;
   const descriptionTransform = `
     translateX(calc(-50% + ${descriptionTranslateX}px))
@@ -124,15 +119,13 @@ const MePage = () => {
           ref={containerRef}
           className="flex h-screen w-full justify-center items-end overflow-hidden sticky top-0"
         >
-          {/* ---- CHANGE START ---- */}
-          {/* We replace the div with a video element */}
           <video
-            src={BG} // Use the imported video file as the source
-            autoPlay // The video will start playing on its own
-            loop // The video will restart when it finishes
-            muted // Mute the video, which is required for autoplay in most browsers
-            playsInline // Important for playback on iOS devices
-            onLoadedData={() => setBgLoaded(true)} // Set bgLoaded to true when the video data is ready
+            src={BG}
+            autoPlay
+            loop
+            muted
+            playsInline
+            onLoadedData={() => setBgLoaded(true)}
             className={`absolute inset-0 w-full h-screen object-cover transition-opacity duration-700 ${
               bgLoaded ? "opacity-100" : "opacity-0"
             }`}
@@ -142,10 +135,9 @@ const MePage = () => {
               transition: "transform 0.1s ease-out",
             }}
           />
-          {/* ---- CHANGE END ---- */}
 
           <p
-            className={`absolute left-1/2 top-1/2 text-center font-black text-white text-[10vh] md:text-[15vh] lg:text-[30vh] z-10`}
+            className={`absolute left-1/2 top-1/2 text-center font-black text-white text-[10vh] md:text-[15vh] lg:text-[30vh] z-10 text-shadow-lg`}
             style={{
               transform: textTransform,
               transformOrigin: "center center",
@@ -164,13 +156,15 @@ const MePage = () => {
               transition: "opacity 150ms ease-in-out",
             }}
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-white text-center mb-4">
-              Software Developer
+            <h2 className="text-4xl md:text-6xl font-bold text-white text-center mb-4 text-shadow-lg">
+              Product Developer
             </h2>
-            <p className="text-md md:text-xl text-white/80 text-center">
-              I build things for the web with a focus on modern design and great
-              user experiences. Currently a computer science student passionate
-              about clean code and creative solutions.
+            <p className="text-md md:text-2xl text-white/80 text-center font-semibold text-shadow-lg">
+              Live with passion, <br />
+              Learn with purpose, <br />
+              Act without hesitation. <br />
+              <br />
+              Share it all as if there's no tomorrow. :D
             </p>
           </div>
 
